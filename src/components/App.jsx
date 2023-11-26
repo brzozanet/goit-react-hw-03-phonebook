@@ -13,6 +13,13 @@ export class App extends Component {
     number: "",
   };
 
+  constructor() {
+    super();
+    const savedContacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(savedContacts);
+    this.state.contacts = parsedContacts || [];
+  }
+
   addContact = event => {
     event.preventDefault();
     const contact = {
@@ -49,6 +56,10 @@ export class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== id),
     }));
   };
+
+  componentDidUpdate() {
+    localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+  }
 
   render() {
     const filteredContacts = this.state.contacts.filter(contact =>
